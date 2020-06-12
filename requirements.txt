@@ -1,0 +1,7 @@
+
+amphoradata==0.9.9
+requests
+python-dotenv
+matplotlib
+microprediction
+pandas
