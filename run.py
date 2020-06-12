@@ -1,7 +1,7 @@
 from amphora.client import AmphoraDataRepositoryClient, Credentials
 from microprediction import MicroWriter
 import time
-   
+import os   
 
 credentials = Credentials(username=os.getenv('username'), password=os.getenv('password'))
 client = AmphoraDataRepositoryClient(credentials) 
