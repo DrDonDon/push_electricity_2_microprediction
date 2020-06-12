@@ -3,7 +3,7 @@ from microprediction import MicroWriter
 import time
    
 
-credentials = Credentials(username=os.getenv(username), password=os.getenv(password)
+credentials = Credentials(username=os.getenv('username'), password=os.getenv('password'))
 client = AmphoraDataRepositoryClient(credentials) 
 
 SA_id = '89c2e30d-78c8-46ef-b591-140edd84ddb6'
