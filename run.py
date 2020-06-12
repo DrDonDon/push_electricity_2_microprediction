@@ -8,7 +8,7 @@ client = AmphoraDataRepositoryClient(credentials)
 
 SA_id = '89c2e30d-78c8-46ef-b591-140edd84ddb6'
 
-mw = MicroWriter(write_key="89c2e30d-78c8-46ef-b591-140edd84ddb")
+mw = MicroWriter(write_key="2d6029b15b6e49ae1d78dec4b551bdd")
 
 amphora = client.get_amphora(SA_id)
 signals = amphora.get_signals()
