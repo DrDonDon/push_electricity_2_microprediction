@@ -8,7 +8,7 @@ import amphora_api_client as a10a
 credentials = Credentials(username=os.getenv('username'), password=os.getenv('password'))
 client = AmphoraDataRepositoryClient(credentials) 
 
-SA_id = '89c2e30d-78c8-46ef-b591-140edd84ddb6'
+Amphora_id = '89c2e30d-78c8-46ef-b591-140edd84ddb6'
 
 mw = MicroWriter(write_key="bdfd44affd28e6c5b45329d6d4df7729")
 
