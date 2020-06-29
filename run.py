@@ -5,6 +5,7 @@ import os
 from datetime import datetime, timedelta
 import amphora_api_client as a10a
 import numpy as np
+import itertools
 
 credentials = Credentials(username=os.getenv('username'), password=os.getenv('password'))
 client = AmphoraDataRepositoryClient(credentials) 
