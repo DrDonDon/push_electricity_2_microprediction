@@ -44,11 +44,11 @@ df = signals.pull(date_time_range=time_range).to_pandas()
 price = df['price']
 mw.set(name=name,value=price[-1])
 ```
+This stream is live here. https://www.microprediction.org/stream_dashboard.html?stream=South_Australia_Electricity_Price
 
-We can use Amphora Data and Microprediction to crowdsource better insights from data
+### Create your own prediction
 
-    Create data for prediction on Microprediction using Amphora Data data
-    Create your own prediction as a starting point
-    Pull best prediction from Microprediction on Amphora Data
+### Push best prediction from Microprediction to Amphora Data
 
 
+## Future developments
