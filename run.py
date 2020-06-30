@@ -24,11 +24,11 @@ mw.set(name=name,value=price[-1])
 
 # Do prediction for next value
 prev_data = mw.get_lagged_values(name=name)
-prev_data = np.array(prev_data[0:501])
+prev_data = np.array(prev_data[0:201])
 current_val = prev_data[0]
-difs = prev_data[1:501] - prev_data[0:500]
-difs_2 = [difs, difs]
+difs = prev_data[1:201] - prev_data[0:200]
+difs_2 = [difs, difs, difs, difs, difs, difs, difs, difs, difs, difs, difs, difs, difs]
 difs_f =  list(itertools.chain.from_iterable(difs_2))
-
+length = mw.num_predictions
 new_vals = current_val + difs_f
-res = mw.submit(name=name,values=new_vals,delay=None, verbose=None)
+res = mw.submit(name=name,values=new_vals[0:length],delay=None, verbose=None)
