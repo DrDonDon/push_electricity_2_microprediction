@@ -76,15 +76,36 @@ You can obviously create far more sophisticated prediction alogrithms but thats 
 
 The results of this prediction is [here](https://www.microprediction.org/stream_dashboard.html?stream=South_Australia_Electricity_Price) under the MUID of `Osteal Beetle`.
 
-### Push best prediction from Microprediction to Amphora Data
+### Retrieving a distribution of future values
 
-TO BE COMPLETED
+First let's pick a horizon. The choices are in the vector:
 
+    mw.DELAYS
+
+We'll take a 15 minute ahead forecast 
+
+    delay15m = 910
+    
+We can retrieve the "community" distribution of electricity price 15 minutes ahead as follows: 
+
+    cdf = mw.get_cdf(name=name, delay=delay15m)
+    
+You'll notice this contains a list of x-values and corresponding values of the cumulative distribution. 
+
+### Push median prediction from Microprediction to Amphora Data
+
+It can be hard to interpret a point estimate when the distribution of outcomes is wild, but... 
+
+    x = self.get_median(name=name, delay=delay15m)
+    
+This can be used to create a new time series in Amphora. 
+    
 ## Future developments
 
 This is a brief first post on how to crowdsource better insights with Amphora Data and Microprediction. Topics we will cover in the future include
 * Longer range predictions
-* Using CDFs not values for predictions
+* Using z-score's from Microprediction in Amphora
+* Soliciting 2d and 3d predictions. 
 * Using many data sources to create better predictions
 
 Please reach out over [email](contact@amphoradata.com) or collaborate on GitHub if you have any queries or requests.
