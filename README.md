@@ -87,7 +87,9 @@ mw.DELAYS
 We'll take a 15 minute ahead forecast. This corresponds to the next value for the electricity price stream.
 ```py
 delay15m = 910
-```    
+```
+910 is the number of seconds we want to look ahead (e.g. 15 x 60) plus a 10 second computation delay.
+
 We can retrieve the "community" distribution of electricity price 15 minutes ahead as follows: 
 ```py
 cdf = mw.get_cdf(name=name, delay=delay15m)
