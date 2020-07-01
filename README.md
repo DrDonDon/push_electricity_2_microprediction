@@ -1,6 +1,6 @@
 # How to crowdsource better insights with Microprediction and Amphora Data.
 
-Crowdsourcing is an effective way to get better predictions and forecasts. Crowdsourcing can be more effective an robust as a variety of methods are used and there is naturally no key-man risk. Microprediction is a leading crowdsourcing prediction website. We will show you how you can combine Amphora Data and Microprediction to get better insights.
+Crowdsourcing is an effective way to get better predictions and forecasts. Crowdsourcing can be more effective an robust as a variety of methods are used and there is naturally no key-man risk. [Microprediction](https://www.microprediction.org/) is a leading crowdsourcing prediction platform. We will show you how you can combine [Amphora Data](https://amphoradata.com) and Microprediction to get better insights.
 
 We will show you how you can create a data set to be predicted using data obtained from Amphora. We will help you create and publish your own prediction. Finally we will show you how to pull the best forecasts from Microprediction and integrate with the rest of your data in Amphora. We will use the South Australian electricity price forecast for this tutorial but you can use any live time-series.
 
@@ -78,6 +78,7 @@ The results of this prediction is [here](https://www.microprediction.org/stream_
 
 ### Push best prediction from Microprediction to Amphora Data
 
+TO BE COMPLETED
 
 ## Future developments
 
