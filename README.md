@@ -6,10 +6,12 @@ We will show you how you can create a data set to be predicted using data obtain
 
 ## Background
 
-* If you haven't already, you need to create an Amphora Data account. You can do so here. 
-* You also need an ID for Microprediction. They don't use traditional accounts, but instead use Memorable Unique Identifiers (MUID). Get started here.
-* You need the latest packages from Microprediction and Amphora.
-* You need access to a live time-series to be predicted. We will be getting our source data from the Australian Electricity Market Operator. 
+* If you haven't already, you need to create an Amphora Data account. [You can do so here](https://identity.amphoradata.com/Register). 
+* You also need an ID for Microprediction. They don't use traditional accounts, but instead use Memorable Unique Identifiers (MUID). [Get started here](https://www.microprediction.org/muids.html).
+* You need the latest packages from Microprediction and Amphora from pypi.
+* You need access to a live time-series to be predicted. We will be getting our source data from the [Australian Electricity Market Operator](https://aemo.com.au/en/energy-systems/electricity/national-electricity-market-nem/data-nem/data-dashboard-nem). 
+
+We are using Amphora Data to manage our data flows and access and share third-party data. We are using Microprediction to share and crowdsource predictions. We assume basic knowledge of python and Amphora Data. You can get all the details on how to use [Amphora here.](https://www.amphoradata.com/docs/contents/)
     
 ## Method
 
@@ -44,13 +46,15 @@ df = signals.pull(date_time_range = time_range).to_pandas()
 price = df['price']
 mw.set(name = name, value = price[-1])
 ```
-This stream is live here. https://www.microprediction.org/stream_dashboard.html?stream=South_Australia_Electricity_Price
+This stream is [available here.](https://www.microprediction.org/stream_dashboard.html?stream=South_Australia_Electricity_Price)
 
 ### Create your own prediction
 
 We now want to create our own prediction for the data stream. This helps set the standard for predictions and provides a floor in the quality of predictions you use.
 
 You can predict different timescales with Microprediction. For simplicities sake, we will just try to predict the next value.
+
+Microprediction takes in a distibution of predictions rather than a single value. 
 
 The main code you need is 
 ```py
@@ -59,7 +63,7 @@ mw.submit(name = name, values = values, delay = None)
 ```
 Here `name` is the prediction name, `values` is a distribution for the next value, and `delay` corresponds to how long you want to predict in the future.
 
-Our full prediction code which simply takes the last 100 values to create a simple distribution is below
+Our full prediction code which simply takes the last 100 values to create a nieve distribution is below
 ```py
 prev_data = mw.get_lagged_values(name=name)
 prev_data = np.array(prev_data[0:101])
@@ -80,4 +84,4 @@ This is a brief first post on how to crowdsource better insights with Amphora Da
 * Using CDFs not values for predictions
 * Using many data sources to create better predictions
 
-Please reach out to contact@amphoradata.com if you have any queries or requests.
+Please reach out over [email](contact@amphoradata.com) or collaborate on GitHub if you have any queries or requests.
