@@ -14,12 +14,12 @@ We will show you how you can create a data set to be predicted using data obtain
 ## Method
 
 ### Publish data stream on Microprediction
-Publishing data is very easy. You first need to create a `MicroWriter` object, then set a name and value
+Publishing data is very easy. You first need to create a `MicroWriter` object, then set a `name` and `value`
 ```py
 mw = MicroWriter(write_key = my_muid)
 mw.set(name=name,value=value)
 ```
-Here the write key is your MUID. Name is a string and value is some number you have got from Amphora.
+Here the `write_key` is your MUID. `name` is a string and is the name of your prediction. `value` is some number you have got from Amphora.
 
 Our full code for pulling data from our South Australia Electricity Price Amphora and creating a data stream to predict is below
 ```py
@@ -40,15 +40,44 @@ mw = MicroWriter(write_key="bdfd44affd28e6c5b45329d6d4df7729")
 time_range = a10a.DateTimeRange(_from = datetime.utcnow() + timedelta(hours=-1) , to= datetime.utcnow() )
 amphora = client.get_amphora(Amphora_id)
 signals = amphora.get_signals()
-df = signals.pull(date_time_range=time_range).to_pandas()
+df = signals.pull(date_time_range = time_range).to_pandas()
 price = df['price']
-mw.set(name=name,value=price[-1])
+mw.set(name = name, value = price[-1])
 ```
 This stream is live here. https://www.microprediction.org/stream_dashboard.html?stream=South_Australia_Electricity_Price
 
 ### Create your own prediction
 
+We now want to create our own prediction for the data stream. This helps set the standard for predictions and provides a floor in the quality of predictions you use.
+
+You can predict different timescales with Microprediction. For simplicities sake, we will just try to predict the next value.
+
+The main code you need is 
+```py
+mw = MicroWriter(write_key="bdfd44affd28e6c5b45329d6d4df7729")
+mw.submit(name = name, values = values, delay = None)
+```
+Here `name` is the prediction name, `values` is a distribution for the next value, and `delay` corresponds to how long you want to predict in the future.
+
+Our full prediction code which simply takes the last 100 values to create a simple distribution is below
+```py
+prev_data = mw.get_lagged_values(name=name)
+prev_data = np.array(prev_data[0:101])
+current_val = prev_data[0]
+difs = prev_data[1:101] - prev_data[0:100]
+new_vals = current_val + difs
+res = mw.submit(name=name,values=new_vals,delay=None, verbose=None)
+```
+You can obviously create far more sophisticated prediction alogrithms but thats not the objective of this document.
+
 ### Push best prediction from Microprediction to Amphora Data
 
 
 ## Future developments
+
+This is a brief first post on how to crowdsource better insights with Amphora Data and Microprediction. Topics we will cover in the future include
+* Longer range predictions
+* Using CDFs not values for predictions
+* Using many data sources to create better predictions
+
+Please reach out to contact@amphoradata.com if you have any queries or requests.
