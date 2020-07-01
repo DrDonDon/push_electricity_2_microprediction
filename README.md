@@ -78,27 +78,34 @@ The results of this prediction is [here](https://www.microprediction.org/stream_
 
 ### Retrieving a distribution of future values
 
-First let's pick a horizon. The choices are in the vector:
+After waiting a little while, the Microprediction community will start contributing lots of predictions.
 
-    mw.DELAYS
-
-We'll take a 15 minute ahead forecast 
-
-    delay15m = 910
-    
+We now want to get a distribution of future values. First let's pick a horizon. The choices are in the vector:
+```py
+mw.DELAYS
+```
+We'll take a 15 minute ahead forecast. This corresponds to the next value for the electricity price stream.
+```py
+delay15m = 910
+```    
 We can retrieve the "community" distribution of electricity price 15 minutes ahead as follows: 
-
-    cdf = mw.get_cdf(name=name, delay=delay15m)
-    
-You'll notice this contains a list of x-values and corresponding values of the cumulative distribution. 
+```py
+cdf = mw.get_cdf(name=name, delay=delay15m)
+```    
+You'll notice this contains a list of x-values and corresponding values of the cumulative distribution. You can use this distribution to get the mean, median or any other summary statistic you want. 
 
 ### Push median prediction from Microprediction to Amphora Data
 
-It can be hard to interpret a point estimate when the distribution of outcomes is wild, but... 
-
-    x = self.get_median(name=name, delay=delay15m)
+It can be hard to interpret a point estimate when the distribution of outcomes is wild, you can define the median as 
+```py
+median_forecast_value = self.get_median(name=name, delay=delay15m)
+```
     
-This can be used to create a new time series in Amphora. 
+This can be used to create a new time series in Amphora. This can be simply done with 
+```py
+Signals = [dict(t = datetime_stamp, median_forecast_value = median_forecast_value)] 
+amphora.push_signals_dict_array(Signals) 
+```    
     
 ## Future developments
 
@@ -108,4 +115,4 @@ This is a brief first post on how to crowdsource better insights with Amphora Da
 * Soliciting 2d and 3d predictions. 
 * Using many data sources to create better predictions
 
-Please reach out over [email](contact@amphoradata.com) or collaborate on GitHub if you have any queries or requests.
+Please reach out over [email](mailto:contact@amphoradata.com) or collaborate on GitHub if you have any queries or requests.
