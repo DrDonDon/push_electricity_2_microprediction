@@ -74,6 +74,8 @@ res = mw.submit(name=name,values=new_vals,delay=None, verbose=None)
 ```
 You can obviously create far more sophisticated prediction alogrithms but thats not the objective of this document.
 
+The results of this prediction is [here](https://www.microprediction.org/stream_dashboard.html?stream=South_Australia_Electricity_Price) under the MUID of `Osteal Beetle`.
+
 ### Push best prediction from Microprediction to Amphora Data
 
 
