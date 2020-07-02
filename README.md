@@ -63,12 +63,12 @@ mw.submit(name = name, values = values, delay = None)
 ```
 Here `name` is the prediction name, `values` is a distribution for the next value, and `delay` corresponds to how long you want to predict in the future.
 
-Our full prediction code, which simply takes the last 100 values to create a nieve distribution, is below. You can obviously create far more sophisticated prediction alogrithms but thats not the objective of this document.
+Our full prediction code, which simply takes the last 225 values to create a nieve distribution, is below. You can obviously create far more sophisticated prediction alogrithms but thats not the objective of this document.
 ```py
 prev_data = mw.get_lagged_values(name=name)
-prev_data = np.array(prev_data[0:101])
+prev_data = np.array(prev_data[0:226])
 current_val = prev_data[0]
-difs = prev_data[1:101] - prev_data[0:100]
+difs = prev_data[1:226] - prev_data[0:225]
 new_vals = current_val + difs
 res = mw.submit(name=name,values=new_vals,delay=None, verbose=None)
 ```
