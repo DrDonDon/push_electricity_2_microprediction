@@ -24,9 +24,9 @@ mw.set(name=name,value=price[-1])
 
 # Do prediction for next value
 prev_data = mw.get_lagged_values(name=name)
-prev_data = np.array(prev_data[0:201])
+prev_data = np.array(prev_data[0:101])
 current_val = prev_data[0]
-difs = prev_data[1:201] - prev_data[0:200]
+difs = prev_data[1:101] - prev_data[0:100]
 difs_2 = [difs, difs, difs, difs, difs, difs, difs, difs, difs, difs, difs, difs, difs]
 difs_f =  list(itertools.chain.from_iterable(difs_2))
 length = mw.num_predictions
