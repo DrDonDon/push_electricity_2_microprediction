@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import amphora_api_client as a10a
 import numpy as np
 import itertools
+import statsmodels.api as sm
 
 credentials = Credentials(username=os.getenv('username'), password=os.getenv('password'))
 client = AmphoraDataRepositoryClient(credentials) 
@@ -23,12 +24,14 @@ price = df['price']
 mw.set(name=name,value=price[-1])
 
 # Do prediction for next value
+length = mw.num_predictions
 prev_data = mw.get_lagged_values(name=name)
 prev_data = np.array(prev_data[0:101])
 current_val = prev_data[0]
-difs = prev_data[1:101] - prev_data[0:100]
-difs_2 = [difs, difs, difs, difs, difs, difs, difs, difs, difs, difs, difs, difs, difs]
-difs_f =  list(itertools.chain.from_iterable(difs_2))
-length = mw.num_predictions
-new_vals = current_val + difs_f
-res = mw.submit(name=name,values=new_vals[0:length],delay=None, verbose=None)
+
+model_fit = sm.load('predictive_model.pickle')
+std_val = 8.1 # estimated previously
+
+yhat = model_fit.forecast(model_fit.y, steps=1)
+dist = np.random.laplace(yhat[0,0], std_val/np.sqrt(2), length)
+res = mw.submit(name=name, values=dist, delay=None, verbose=None)
