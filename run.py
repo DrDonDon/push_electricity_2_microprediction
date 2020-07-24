@@ -47,6 +47,7 @@ mw.set(name=name,value=price[-1])
 
 ##########################################################
 # Create a prediction and publish on microprediction
+length = mw.num_predictions
 data_time_range = a10a.DateTimeRange(_from = datetime.utcnow() + timedelta(hours=-length/2) , to= datetime.utcnow() )
 pdf = electricity_signals.pull(date_time_range=data_time_range).to_pandas()
 price = pdf['price']
