@@ -1,5 +1,5 @@
 from amphora.client import AmphoraDataRepositoryClient, Credentials
-from microprediction import MicroWriter
+from microprediction import MicroWriter, MicroReader
 import time
 import os
 from datetime import datetime, timedelta
@@ -9,14 +9,34 @@ import itertools
 import statsmodels.api as sm
 from statsmodels.tsa.vector_ar.var_model import VAR
 
+############################################################
+# Useful function
+def get_median(x,y):    
+    p=0.5
+    N = len(x)
+    x_oi = 0
+    y_oi = 100000
+    for n in range(N):
+        if abs(y[n] - p) < y_oi:
+            y_oi = abs(y[n] - p)
+            x_oi = x[n]
+            
+    print(x_oi)
+    print(y_oi)   
+    return x_oi
+
+##############################################################
+# parameters and details
 credentials = Credentials(username=os.getenv('username'), password=os.getenv('password'))
 client = AmphoraDataRepositoryClient(credentials) 
 
 Electricity_Amphora_id = '89c2e30d-78c8-46ef-b591-140edd84ddb6'
 Weather_Amphora_id = '916058ba-cb52-40f6-8cf2-c4aafeb4c26e'
+Forecast_amphora_id = '78831a6b-de49-454e-9e5c-7c757478e783'
 name = 'South_Australia_Electricity_Price.json'
 
-# Upload data
+#############################################################
+# Publish raw data on microprediction
 mw = MicroWriter(write_key="bdfd44affd28e6c5b45329d6d4df7729")
 time_range = a10a.DateTimeRange(_from = datetime.utcnow() + timedelta(hours=-1) , to= datetime.utcnow() )
 electricity_amphora = client.get_amphora(Electricity_Amphora_id)
@@ -25,12 +45,8 @@ df = electricity_signals.pull(date_time_range=time_range).to_pandas()
 price = df['price']
 mw.set(name=name,value=price[-1])
 
-print(price)
-
-# Do prediction for next value
-length = mw.num_predictions
-
-# pull data to do model
+##########################################################
+# Create a prediction and publish on microprediction
 data_time_range = a10a.DateTimeRange(_from = datetime.utcnow() + timedelta(hours=-length/2) , to= datetime.utcnow() )
 pdf = electricity_signals.pull(date_time_range=data_time_range).to_pandas()
 price = pdf['price']
@@ -55,3 +71,17 @@ yhat = model_fit.forecast(model_fit.y, steps=1)
 
 dist = np.random.laplace(yhat[0,0], std_val/np.sqrt(2), length)
 res = mw.submit(name=name, values=dist, delay=None, verbose=None)
+
+
+################################################################
+# Publish best predictions on Amphora
+mr = MicroReader()
+x_values = np.arange(price[-1]-40, price[-1]+40, 0.5).tolist()
+cdf = mr.get_cdf(name=name, values = x_values)
+median = get_median(cdf['x'], cdf['y'])
+
+forecast_amphora = client.get_amphora(forecast_amphora_id)
+time = datetime.utcnow()
+signal = [dict(t = time, medianValue = median)]
+forecast_amphora.push_signals_dict_array(signal) 
+
