@@ -76,13 +76,13 @@ res = mw.submit(name=name, values=dist, delay=None, verbose=None)
 
 ################################################################
 # Publish best predictions on Amphora
-mr = MicroReader()
-x_values = np.arange(price[-1]-40, price[-1]+40, 0.5).tolist()
-cdf = mr.get_cdf(name=name, values = x_values)
-median = get_median(cdf['x'], cdf['y'])
+# mr = MicroReader()
+# x_values = np.arange(price[-1]-40, price[-1]+40, 0.5).tolist()
+# cdf = mr.get_cdf(name=name, values = x_values)
+#median = get_median(cdf['x'], cdf['y'])
 
-forecast_amphora = client.get_amphora(Forecast_amphora_id)
-time = datetime.utcnow()
-signal = [dict(t = time, medianValue = median)]
-forecast_amphora.push_signals_dict_array(signal) 
+#forecast_amphora = client.get_amphora(Forecast_amphora_id)
+#time = datetime.utcnow()
+#signal = [dict(t = time, medianValue = median)]
+#forecast_amphora.push_signals_dict_array(signal) 
 
