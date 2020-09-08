@@ -47,31 +47,31 @@ mw.set(name=name,value=price[-1])
 
 ##########################################################
 # Create a prediction and publish on microprediction
-length = mw.num_predictions
-data_time_range = a10a.DateTimeRange(_from = datetime.utcnow() + timedelta(hours=-length/2) , to= datetime.utcnow() )
-pdf = electricity_signals.pull(date_time_range=data_time_range).to_pandas()
-price = pdf['price']
-prices_of_interest = price[-length-1:-1]
+# length = mw.num_predictions
+# data_time_range = a10a.DateTimeRange(_from = datetime.utcnow() + timedelta(hours=-length/2) , to= datetime.utcnow() )
+# pdf = electricity_signals.pull(date_time_range=data_time_range).to_pandas()
+# price = pdf['price']
+# prices_of_interest = price[-length-1:-1]
 
-elec_prices_diff = np.zeros(length-1)
-for t in range(1,length):
-    elec_prices_diff[t-1] = prices_of_interest[t] - prices_of_interest[t-1]
-std_val = np.std(elec_prices_diff[abs(elec_prices_diff)<30])
+# elec_prices_diff = np.zeros(length-1)
+# for t in range(1,length):
+#    elec_prices_diff[t-1] = prices_of_interest[t] - prices_of_interest[t-1]
+# std_val = np.std(elec_prices_diff[abs(elec_prices_diff)<30])
 
-weather_amphora = client.get_amphora(Weather_Amphora_id)
-weather_signals = weather_amphora.get_signals()
-wdf = weather_signals.pull(date_time_range=data_time_range).to_pandas()
-data_of_interest = wdf[0:length]
+# weather_amphora = client.get_amphora(Weather_Amphora_id)
+# weather_signals = weather_amphora.get_signals()
+# wdf = weather_signals.pull(date_time_range=data_time_range).to_pandas()
+# data_of_interest = wdf[0:length]
 
-training_data = np.transpose(np.array([prices_of_interest, data_of_interest['pressure'], data_of_interest['airTemp']]))
+# training_data = np.transpose(np.array([prices_of_interest, data_of_interest['pressure'], data_of_interest['airTemp']]))
 
-model = VAR(training_data)
-model_fit = model.fit()
+# model = VAR(training_data)
+# model_fit = model.fit()
 
-yhat = model_fit.forecast(model_fit.y, steps=1)
+# yhat = model_fit.forecast(model_fit.y, steps=1)
 
-dist = np.random.laplace(yhat[0,0], std_val/np.sqrt(2), length)
-res = mw.submit(name=name, values=dist, delay=None, verbose=None)
+# dist = np.random.laplace(yhat[0,0], std_val/np.sqrt(2), length)
+# res = mw.submit(name=name, values=dist, delay=None, verbose=None)
 
 
 ################################################################
