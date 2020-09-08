@@ -1,5 +1,5 @@
 
-amphoradata==0.9.9
+amphoradata==0.10.14
 requests
 python-dotenv
 matplotlib
